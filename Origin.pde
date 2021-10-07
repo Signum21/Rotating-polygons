@@ -1,5 +1,4 @@
 //baseSides supports from 4 to 10 sides
-//Json?
 final int baseSides = 10, len = 200;
 
 int rotationAngle = 0, currentIndex = 0;
@@ -28,6 +27,14 @@ void draw(){
   background(0);
   translate(width/2+len/2, height-1);
   base.display();  
+  movePolygons();
+  
+  if(rotationAngle >= angleDifference){
+    setNextRotationVertex();
+  }
+}
+
+void movePolygons(){
   translate(traslPoint.x, traslPoint.y);
   
   for(Polygon pol : polygons){
@@ -37,13 +44,13 @@ void draw(){
     popMatrix();
   }
   rotationAngle += 2;
-  
-  if(rotationAngle >= angleDifference){
-    traslPoint = base.getVertex((++currentIndex+1) % baseSides);
+}
+
+void setNextRotationVertex(){
+  traslPoint = base.getVertex((++currentIndex + 1) % baseSides);
    
-    for(Polygon pol : polygons){
-      pol.createVertices(base.getVertex(currentIndex % baseSides), traslPoint, currentIndex, baseSides);
-    }
-    rotationAngle = 0;
+  for(Polygon pol : polygons){
+    pol.createVertices(base.getVertex(currentIndex % baseSides), traslPoint, currentIndex, baseSides);
   }
+  rotationAngle = 0;
 }
